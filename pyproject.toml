@@ -36,7 +36,7 @@ keywords = [
     'event-bus',
 ]
 requires-python = '>=3.11'
-dependencies = ['value-object-pattern>=1.12.0']
+dependencies = ['value-object-pattern>=1.14.1']
 dynamic = ['version']
 
 [project.urls]
