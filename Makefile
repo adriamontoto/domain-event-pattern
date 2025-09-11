@@ -1,8 +1,8 @@
 SHELL := /usr/bin/env bash
 .SHELLFLAGS := -eu -o pipefail -c
 
-FULL_SOURCES = domain_event_pattern tests
 SOURCES = domain_event_pattern
+FULL_SOURCES = $(SOURCES) tests
 CONFIGURATION_FILE = pyproject.toml 
 CI ?= false
 VERBOSE ?= false
