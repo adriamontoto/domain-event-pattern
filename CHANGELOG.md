@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.2.0 (2025-09-12)
+
+### ✨ Features
+
+- Implement event handler decorator and registration logic
+  ([`bd06faf`](https://github.com/adriamontoto/domain-event-pattern/commit/bd06fafc1dd8e626c5940acffcdb043850649197))
+
+
 ## v0.1.0 (2025-09-11)
 
 ### ✨ Features
