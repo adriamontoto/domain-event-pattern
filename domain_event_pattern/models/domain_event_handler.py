@@ -3,7 +3,9 @@ DomainEventHandler module.
 """
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, get_args, get_origin
+
+from value_object_pattern.decorators import classproperty
 
 from .domain_event import DomainEvent
 
@@ -18,54 +20,7 @@ class DomainEventHandler(ABC, Generic[T]):  # noqa: UP046
 
     Example:
     ```python
-    from domain_event_pattern import DomainEvent, DomainEventHandler, handle_events
-
-
-    class UserCreatedEvent(DomainEvent):
-        _event_name = 'user.created'
-        user_identifier: str
-        email: str
-
-        def __init__(
-            self,
-            user_identifier: str,
-            email: str,
-            identifier: str | None = None,
-            occurred_datetime: str | None = None,
-        ) -> None:
-            super().__init__(identifier=identifier, occurred_datetime=occurred_datetime)
-            self.user_identifier = user_identifier
-            self.email = email
-
-
-    class OrderPlacedEvent(DomainEvent):
-        _event_name = 'order.placed'
-        order_identifier: str
-        user_identifier: str
-        amount: float
-
-        def __init__(
-            self,
-            order_identifier: str,
-            user_identifier: str,
-            amount: float,
-            identifier: str | None = None,
-            occurred_datetime: str | None = None,
-        ) -> None:
-            super().__init__(identifier=identifier, occurred_datetime=occurred_datetime)
-            self.order_identifier = order_identifier
-            self.user_identifier = user_identifier
-            self.amount = amount
-
-
-    @handle_events(UserCreatedEvent, OrderPlacedEvent)
-    class EmailNotificationHandler(DomainEventHandler[UserCreatedEvent | OrderPlacedEvent]):
-        async def on(self, *, event: UserCreatedEvent | OrderPlacedEvent) -> None:
-            if isinstance(event, UserCreatedEvent):
-                print(f'Sending welcome email to {event.email}')
-                return
-
-            print(f'Sending order confirmation for order {event.order_identifier}')
+    # TODO:
     ```
     """
 
@@ -79,53 +34,35 @@ class DomainEventHandler(ABC, Generic[T]):  # noqa: UP046
 
         Example:
         ```python
-        from domain_event_pattern import DomainEvent, DomainEventHandler, handle_events
-
-
-        class UserCreatedEvent(DomainEvent):
-            _event_name = 'user.created'
-            user_identifier: str
-            email: str
-
-            def __init__(
-                self,
-                user_identifier: str,
-                email: str,
-                identifier: str | None = None,
-                occurred_datetime: str | None = None,
-            ) -> None:
-                super().__init__(identifier=identifier, occurred_datetime=occurred_datetime)
-                self.user_identifier = user_identifier
-                self.email = email
-
-
-        class OrderPlacedEvent(DomainEvent):
-            _event_name = 'order.placed'
-            order_identifier: str
-            user_identifier: str
-            amount: float
-
-            def __init__(
-                self,
-                order_identifier: str,
-                user_identifier: str,
-                amount: float,
-                identifier: str | None = None,
-                occurred_datetime: str | None = None,
-            ) -> None:
-                super().__init__(identifier=identifier, occurred_datetime=occurred_datetime)
-                self.order_identifier = order_identifier
-                self.user_identifier = user_identifier
-                self.amount = amount
-
-
-        @handle_events(UserCreatedEvent, OrderPlacedEvent)
-        class EmailNotificationHandler(DomainEventHandler[UserCreatedEvent | OrderPlacedEvent]):
-            async def on(self, *, event: UserCreatedEvent | OrderPlacedEvent) -> None:
-                if isinstance(event, UserCreatedEvent):
-                    print(f'Sending welcome email to {event.email}')
-                    return
-
-                print(f'Sending order confirmation for order {event.order_identifier}')
+        # TODO:
         ```
         """
+
+    @classproperty
+    def subscribed_to(self) -> tuple[type[DomainEvent], ...]:
+        """
+        Get the types of domain events this handler can handle.
+
+        Returns:
+            tuple[type[DomainEvent], ...]: A tuple of domain event types that this handler can handle.
+
+        Example:
+        ```python
+        # TODO:
+        ```
+        """
+        for base in self.__orig_bases__:
+            origin = get_origin(tp=base)
+            if origin is not None and issubclass(origin, DomainEventHandler):
+                arguments = get_args(tp=base)
+                if arguments:
+                    union_origin = get_origin(tp=arguments[0])
+                    if union_origin is not None:
+                        handled_events = get_args(tp=arguments[0])
+                        return tuple(event for event in handled_events if issubclass(event, DomainEvent))
+
+                    handled_event = arguments[0]
+                    if issubclass(handled_event, DomainEvent):
+                        return (handled_event,)
+
+        return ()
