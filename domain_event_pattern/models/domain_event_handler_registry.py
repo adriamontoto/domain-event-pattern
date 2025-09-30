@@ -7,7 +7,7 @@ from typing import Any, ClassVar
 from value_object_pattern.decorators import classproperty
 
 from .domain_event import DomainEvent
-from .domain_event_handler import DomainEventHandler
+from .domain_event_subscriber import DomainEventSubscriber
 
 
 class EventHandlerRegistry:
@@ -15,10 +15,10 @@ class EventHandlerRegistry:
     Registry for domain event subscribers using decorator registration.
     """
 
-    _subscribers: ClassVar[dict[DomainEventHandler[Any], tuple[type[DomainEvent], ...]]] = {}
+    _subscribers: ClassVar[dict[DomainEventSubscriber[Any], tuple[type[DomainEvent], ...]]] = {}
 
     @classmethod
-    def register(cls, *, subscriber: DomainEventHandler[Any], event_types: tuple[type[DomainEvent], ...]) -> None:
+    def register(cls, *, subscriber: DomainEventSubscriber[Any], event_types: tuple[type[DomainEvent], ...]) -> None:
         """
         Register a domain event subscriber with its associated event types.
 
@@ -29,7 +29,7 @@ class EventHandlerRegistry:
         cls._subscribers[subscriber] = event_types
 
     @classproperty
-    def subscribers(self) -> dict[DomainEventHandler[Any], tuple[type[DomainEvent], ...]]:
+    def subscribers(self) -> dict[DomainEventSubscriber[Any], tuple[type[DomainEvent], ...]]:
         """
         Get all registered subscribers with their associated event types.
 
