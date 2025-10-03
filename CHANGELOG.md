@@ -2,6 +2,31 @@
 
 <!-- version list -->
 
+## v0.7.0 (2025-10-03)
+
+### 🐛 Bug Fixes
+
+- Conditional import of 'override' for Python < 3.12
+  ([`468ab83`](https://github.com/adriamontoto/domain-event-pattern/commit/468ab8351686546dc2972f16664b4962c5cc9155))
+
+### ✨ Features
+
+- Delete unused classes
+  ([`4c5542c`](https://github.com/adriamontoto/domain-event-pattern/commit/4c5542cd131c374b3bdce1e0bf5250a996af9a05))
+
+- Ensure subscriber name is defined with the subscriber subclasses
+  ([`0464a71`](https://github.com/adriamontoto/domain-event-pattern/commit/0464a713445e7180b6c664677568596ea8409361))
+
+- Implement event handler class property to obtain subscribed events
+  ([`1aea69b`](https://github.com/adriamontoto/domain-event-pattern/commit/1aea69b2807019949df6eb957b39518d76c51fa3))
+
+- Rename domain event event name to name
+  ([`e53195a`](https://github.com/adriamontoto/domain-event-pattern/commit/e53195a40bc4ccbe47364479607bdcd6f4fb7e02))
+
+- Replace DomainEventHandler with DomainEventSubscriber
+  ([`daf3ee1`](https://github.com/adriamontoto/domain-event-pattern/commit/daf3ee14e39aa0f881f04196f43cf95e4552c593))
+
+
 ## v0.6.0 (2025-09-13)
 
 ### ✨ Features
