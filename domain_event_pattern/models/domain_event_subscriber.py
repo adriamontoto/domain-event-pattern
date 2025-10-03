@@ -2,8 +2,15 @@
 DomainEventSubscriber module.
 """
 
+from sys import version_info
+
+if version_info >= (3, 12):
+    from typing import override  # pragma: no cover
+else:
+    from typing_extensions import override  # pragma: no cover
+
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, get_args, get_origin, override
+from typing import Generic, TypeVar, get_args, get_origin
 
 from value_object_pattern.decorators import classproperty
 
