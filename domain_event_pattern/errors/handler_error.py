@@ -42,7 +42,7 @@ class HandlerError(DomainEventPatternBaseError):
         self._event = event
         self._error = error
 
-        message = f'Handler <<<{handler.__name__}>>> failed to process event <<<{event.event_name}>>> with error <<<{error}>>>.'  # noqa: E501
+        message = f'Handler <<<{handler.__name__}>>> failed to process event <<<{event.name}>>> with error <<<{error}>>>.'  # noqa: E501  # fmt: skip
         super().__init__(message=message)
 
     @property
