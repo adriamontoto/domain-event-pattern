@@ -5,7 +5,7 @@ EventBus module.
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from domain_event_pattern.models.domain_event import DomainEvent
+from domain_event_pattern.models import DomainEvent
 
 
 class EventBus(ABC):
