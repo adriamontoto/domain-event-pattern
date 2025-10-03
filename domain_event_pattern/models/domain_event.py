@@ -38,7 +38,7 @@ class DomainEvent(BaseModel):
 
     _identifier: DomainEventIdentifier
     _aggregate_identifier: DomainEventAggregateIdentifier
-    _event_name: str | None  # Define this attribute in subclasses
+    _name: str  # Define this attribute in subclasses
     _occurred_datetime: DomainEventOccurredDatetime
 
     @override
@@ -48,8 +48,10 @@ class DomainEvent(BaseModel):
         """
         super().__init_subclass__(**kwargs)
 
-        if hasattr(cls, '_event_name') and cls._event_name is not None:
-            DomainEventName(value=cls._event_name, title=cls.__name__, parameter='_event_name')
+        if not hasattr(cls, '_name') or cls._name is None:
+            raise ValueError(f'{cls.__name__} must define _name class attribute.')
+
+        DomainEventName(value=cls._name, title=cls.__name__, parameter='_name')
 
     def __init__(
         self,
@@ -74,9 +76,6 @@ class DomainEvent(BaseModel):
         # TODO:
         ```
         """  # noqa: E501  # fmt: skip
-        if self._event_name is None:
-            raise ValueError(f'{self.__class__.__name__} must define _event_name class attribute.')
-
         if identifier is None:
             identifier = str(uuid4())
 
@@ -104,14 +103,14 @@ class DomainEvent(BaseModel):
         # TODO:
         ```
         """  # noqa: E501  # fmt: skip
-        event_name = primitives.get('event_name')
+        name = primitives.get('name')
         identifier = primitives.get('identifier')
         aggregate_identifier = primitives.get('aggregate_identifier')
         occurred_datetime = primitives.get('occurred_datetime')
         event_data = primitives.get('data', {})
 
-        if event_name != cls.event_name:
-            raise ValueError(f'DomainEvent event_name mismatch expected <<<{cls.event_name}>>> got <<<{event_name}>>>.')
+        if name != cls.name:
+            raise ValueError(f'DomainEvent name mismatch expected <<<{cls.name}>>> got <<<{name}>>>.')
 
         return cls(
             identifier=identifier,
@@ -134,13 +133,13 @@ class DomainEvent(BaseModel):
         ```
         """  # noqa: E501  # fmt: skip
         event_data = super().to_primitives()
-        event_data.pop('event_name', None)
+        event_data.pop('name', None)
         event_data.pop('identifier', None)
         event_data.pop('aggregate_identifier', None)
         event_data.pop('occurred_datetime', None)
 
         return {
-            'event_name': self.event_name,
+            'name': self.name,
             'identifier': self.identifier,
             'aggregate_identifier': self.aggregate_identifier,
             'occurred_datetime': self.occurred_datetime,
@@ -178,7 +177,7 @@ class DomainEvent(BaseModel):
         return self._aggregate_identifier.value
 
     @classproperty
-    def event_name(self) -> str:
+    def name(self) -> str:
         """
         Get the name of the event.
 
@@ -193,10 +192,10 @@ class DomainEvent(BaseModel):
         # TODO:
         ```
         """  # noqa: E501  # fmt: skip
-        if not hasattr(self, '_event_name') or self._event_name is None:
-            raise ValueError(f'{self.__name__} must define _event_name class attribute.')  # type: ignore[attr-defined]
+        if not hasattr(self, '_name') or self._name is None:
+            raise ValueError(f'{self.__name__} must define _name class attribute.')  # type: ignore[attr-defined]
 
-        return self._event_name
+        return self._name
 
     @property
     def occurred_datetime(self) -> str:

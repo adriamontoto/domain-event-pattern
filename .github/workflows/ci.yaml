@@ -237,7 +237,7 @@ jobs:
 
       - name: 📊 Generate coverage comment
         id: coverage-comment
-        uses: py-cov-action/python-coverage-comment-action@0544a9c648672334d94ec5dd1add7410b4470ddc # v3.37
+        uses: py-cov-action/python-coverage-comment-action@91aaf3b39c7e2331c6bc77767ce017f5160c5f11 # v3.38
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MINIMUM_GREEN: 100
@@ -370,14 +370,14 @@ jobs:
           persist-credentials: false
 
       - name: ▶️ CodeQL Initialization
-        uses: github/codeql-action/init@192325c86100d080feab897ff886c34abd4c83a3 # v3.29.5
+        uses: github/codeql-action/init@64d10c13136e1c5bce3e5fbde8d4906eeaafc885 # v3.29.5
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
           queries: +security-extended,security-and-quality
 
       - name: 🔬 CodeQL Analysis
-        uses: github/codeql-action/analyze@192325c86100d080feab897ff886c34abd4c83a3 # v3.29.5
+        uses: github/codeql-action/analyze@64d10c13136e1c5bce3e5fbde8d4906eeaafc885 # v3.29.5
         with:
           category: '/language:${{ matrix.language }}'
 
@@ -520,7 +520,7 @@ jobs:
 
       - name: 🔖 Semantic Release
         id: released
-        uses: python-semantic-release/python-semantic-release@6df5e876c8682fe0753ec2f8c81eb45547e52747 # v10.0.2
+        uses: python-semantic-release/python-semantic-release@4d4cb0ab842247caea1963132c242c62aab1e4d5 # v10.0.2
         with:
           build: false
           push: true
