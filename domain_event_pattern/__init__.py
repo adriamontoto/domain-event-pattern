@@ -1,4 +1,4 @@
-__version__ = '0.7.0'
+__version__ = '0.8.0'
 
 from .buses import DeferredEventBus, EventBus
 from .models import DomainEvent, DomainEventSubscriber
